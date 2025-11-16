@@ -4,16 +4,17 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from .schemas import ContactCreate, BookingCreate, RoomCreate
 from . import crud
+from .database import db  # for optional health-check
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("festicolive")
 
 app = FastAPI(title="FestiCoLive API")
 
-# TEMPORARY: allow Netlify origin and localhost for dev
+# TEMPORARY: allow everything for testing; later restrict to your Netlify origin
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://festicolive.netlify.app", "http://localhost:3000", "http://localhost:8000"], 
+    allow_origins=["*"],   # <-- set to ["https://festicolive.netlify.app"] after testing
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -26,13 +27,22 @@ async def log_requests(request: Request, call_next):
         response = await call_next(request)
         logger.info(f"Responded: {response.status_code} for {request.method} {request.url}")
         return response
-    except Exception as exc:
+    except Exception:
         logger.exception("Unhandled exception while processing request")
         raise
 
 @app.get("/")
 def root():
     return {"status": "backend running"}
+
+@app.get("/health")
+def health():
+    try:
+        # cheap DB call to test connectivity
+        names = db.list_collection_names()
+        return {"status":"ok","db":True,"collections":len(names)}
+    except Exception as e:
+        return {"status":"error","db":False,"error": str(e)}
 
 @app.post("/api/contact", status_code=201)
 async def post_contact(payload: ContactCreate):

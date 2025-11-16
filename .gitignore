@@ -1,10 +1,12 @@
-# Python/Backend
-backend/.venv/
+# Secrets - DO NOT COMMIT
 backend/.env
-__pycache__/
-
-# Node.js/Frontend
-frontend/node_modules/
-frontend/build/
 frontend/.env.local
-.DS_Store
+
+# Python virtual environment
+backend/.venv/
+
+# Node.js dependencies
+frontend/node_modules/
+
+# Build artifacts
+frontend/build/

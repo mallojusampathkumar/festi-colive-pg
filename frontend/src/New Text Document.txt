@@ -1,0 +1,232 @@
+import React from 'react'
+
+// Single-file React component for a professional, responsive hostel website.
+// Uses Tailwind CSS classes. To use:
+// 1) Create a React app (e.g. `npx create-react-app hostel-site`).
+// 2) Install Tailwind per Tailwind docs and enable JIT. (tailwind.config.js + import in index.css)
+// 3) Replace App.jsx with this file and import it in index.js.
+// 4) Add the image URLs in the `IMAGES` constant below or place local files in /public/assets.
+
+const IMAGES = {
+  hero: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1400&q=60',
+  room1: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=60',
+  room2: 'https://images.unsplash.com/photo-1505691723518-36a1fb0b3f31?auto=format&fit=crop&w=800&q=60',
+  kitchen1: 'https://images.unsplash.com/photo-1541542684-4b0b19a8b45b?auto=format&fit=crop&w=1200&q=60',
+  common: 'https://images.unsplash.com/photo-1505691723518-36a1fb0b3f31?auto=format&fit=crop&w=1200&q=60'
+}
+
+export default function App(){
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
+      <Header />
+      <Hero />
+      <main className="max-w-6xl mx-auto px-6 py-16 space-y-20">
+        <About />
+        <Rooms />
+        <Kitchen />
+        <SelfCooking />
+        <Gallery />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
+  )
+}
+
+function Header(){
+  return (
+    <header className="fixed w-full bg-white/80 backdrop-blur shadow-sm z-40">
+      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center text-white font-bold">F</div>
+          <div className="font-semibold text-lg">FESTI CO-LIVE PG</div>
+        </div>
+        <nav className="hidden md:flex gap-6 items-center text-sm">
+          <a href="#about" className="hover:text-emerald-600">About</a>
+          <a href="#rooms" className="hover:text-emerald-600">Rooms</a>
+          <a href="#kitchen" className="hover:text-emerald-600">Kitchen</a>
+          <a href="#selfcook" className="hover:text-emerald-600">Self-Cook</a>
+          <a href="#contact" className="btn btn-primary">Book / Contact</a>
+        </nav>
+        <div className="md:hidden">
+          {/* Mobile simple menu anchor links for this single-file demo */}
+          <a href="#contact" className="text-sm px-3 py-2 bg-emerald-500 text-white rounded">Book</a>
+        </div>
+      </div>
+    </header>
+  )
+}
+
+function Hero(){
+  return (
+    <section className="relative h-[56vh] md:h-[64vh] flex items-center" style={{backgroundImage:`linear-gradient(rgba(6,8,10,0.45), rgba(6,8,10,0.25)), url('${IMAGES.hero}')`, backgroundSize:'cover', backgroundPosition:'center'}}>
+      <div className="max-w-6xl mx-auto px-6 text-white">
+        <div className="mt-24 md:mt-28 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">Welcome to FESTI CO-LIVE PG — clean, social & affordable</h1>
+          <p className="mt-4 text-lg opacity-90">Private rooms, cozy pods and a fully-equipped communal kitchen where you can cook your own meals. Perfect for students, travellers and short stays.</p>
+          <div className="mt-6 flex gap-3">
+            <a href="#rooms" className="px-5 py-3 rounded-md bg-emerald-500 shadow text-white font-medium">View Rooms</a>
+            <a href="#contact" className="px-5 py-3 rounded-md bg-white/90 text-gray-800 font-medium">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function About(){
+  return (
+    <section id="about" className="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h2 className="text-2xl font-bold">About FESTI CO-LIVE PG</h2>
+        <p className="mt-4 text-gray-600">We offer affordable, clean accommodation with friendly staff and secure lockers. Our hostel focuses on comfort and community — whether you want privacy or to meet new people.</p>
+        <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+          <li className="flex gap-3 items-start"><strong className="text-emerald-600">✓</strong> Free Wi‑Fi & workspace</li>
+          <li className="flex gap-3 items-start"><strong className="text-emerald-600">✓</strong> 24/7 Reception & security</li>
+          <li className="flex gap-3 items-start"><strong className="text-emerald-600">✓</strong> Lockers & charging points</li>
+          <li className="flex gap-3 items-start"><strong className="text-emerald-600">✓</strong> Clean bathrooms & laundry</li>
+        </ul>
+      </div>
+      <div className="rounded-xl overflow-hidden shadow-lg">
+        <img src={IMAGES.common} alt="hostel common area" className="w-full h-72 object-cover" />
+      </div>
+    </section>
+  )
+}
+
+function Rooms(){
+  return (
+    <section id="rooms" className="space-y-6">
+      <h2 className="text-2xl font-bold">Rooms & Pods</h2>
+      <p className="text-gray-600">Choose from private doubles, mixed dorms, or sleeping pods — all with comfortable mattresses and personal lights & outlets.</p>
+      <div className="grid md:grid-cols-3 gap-6 mt-6">
+        <Card image={IMAGES.room1} title="Mixed Dorm - 6 Beds" price="₹499/night" features={["Secure locker","Reading light","Shared bathroom"]} />
+        <Card image={IMAGES.room2} title="Private Double" price="₹1499/night" features={["En-suite option","Queen bed","Workspace"]} />
+        <Card image={IMAGES.room1} title="Sleeping Pod" price="₹699/night" features={["Curtain for privacy","USB & outlet","Compact comfort"]} />
+      </div>
+    </section>
+  )
+}
+
+function Kitchen(){
+  return (
+    <section id="kitchen" className="grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h3 className="text-xl font-semibold">Communal Kitchen</h3>
+        <p className="mt-3 text-gray-600">Our large, hygienic kitchen is set up for multiple guests to cook at once. It includes gas hobs, microwaves, fridges for each guest, and a fully stocked utensil area.</p>
+        <ul className="mt-4 text-sm text-gray-700 space-y-2">
+          <li>• Multiple induction/gas cooktops</li>
+          <li>• Shared fridge space with labeling</li>
+          <li>• Cleaning supplies & dishwasher</li>
+          <li>• Coffee station and breakfast items</li>
+        </ul>
+      </div>
+      <div className="rounded-xl overflow-hidden shadow-lg">
+        <img src={IMAGES.kitchen1} alt="communal kitchen" className="w-full h-64 object-cover" />
+      </div>
+    </section>
+  )
+}
+
+function SelfCooking(){
+  return (
+    <section id="selfcook" className="bg-white rounded-xl shadow p-6">
+      <h3 className="text-xl font-semibold">Self-Cooking / Private Kitchen Access</h3>
+      <p className="mt-3 text-gray-600">Book a time slot for private stove access if you prefer to cook alone. We also provide induction stoves and cookware on rent.</p>
+      <div className="mt-4 flex flex-col sm:flex-row gap-4">
+        <div className="flex-1 p-4 border rounded">
+          <h4 className="font-medium">Hourly private slot</h4>
+          <p className="text-sm text-gray-600 mt-2">Reserve 1-hour exclusive access to a cooking station — great for detailed cooking or group meals.</p>
+        </div>
+        <div className="flex-1 p-4 border rounded">
+          <h4 className="font-medium">Cookware rental</h4>
+          <p className="text-sm text-gray-600 mt-2">Pots, pans, knives and basic utensils available at small fees.</p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Gallery(){
+  return (
+    <section id="gallery" className="space-y-6">
+      <h2 className="text-2xl font-bold">Gallery</h2>
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <img src={IMAGES.room1} alt="room" className="w-full h-48 object-cover rounded" />
+        <img src={IMAGES.room2} alt="room" className="w-full h-48 object-cover rounded" />
+        <img src={IMAGES.kitchen1} alt="kitchen" className="w-full h-48 object-cover rounded" />
+        <img src={IMAGES.common} alt="common" className="w-full h-48 object-cover rounded" />
+        <img src={IMAGES.hero} alt="lounge" className="w-full h-48 object-cover rounded col-span-2" />
+      </div>
+    </section>
+  )
+}
+
+function Contact(){
+  return (
+    <section id="contact" className="bg-neutral-900 text-white rounded-xl p-8 grid md:grid-cols-2 gap-6 items-start">
+      <div>
+        <h3 className="text-2xl font-bold">Book a stay or ask a question</h3>
+        <p className="mt-2 text-gray-300">Quick replies, secure booking and easy check-in. We'll respond within 24 hours.</p>
+        <div className="mt-6 space-y-3 text-sm text-gray-200">
+          <div><strong>Address:</strong> Survey No 80, Plot No 17, Marthanda Nagar Rd, New Hafeezpet, Gopal Reddy Nagar, Hafeezpet, Serilingampalle (M), Hyderabad, Telangana 500049</div>
+          <div><strong>Phone:</strong> +91 98765 43210</div>
+          <div><strong>Email:</strong> festicolivepg@example.com</div>
+        </div>
+      </div>
+      <form className="space-y-4" onSubmit={(e)=>{e.preventDefault(); alert('Thanks — booking request sent (demo)')}}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <input required placeholder="Full name" className="p-3 rounded bg-neutral-800/60 placeholder-gray-300" />
+          <input required placeholder="Email" type="email" className="p-3 rounded bg-neutral-800/60 placeholder-gray-300" />
+        </div>
+        <input placeholder="Phone" className="p-3 rounded bg-neutral-800/60 placeholder-gray-300 w-full" />
+        <select className="p-3 rounded bg-neutral-800/60 w-full">
+          <option>Mixed Dorm - 6 Beds</option>
+          <option>Private Double</option>
+          <option>Sleeping Pod</option>
+        </select>
+        <textarea placeholder="Message or check-in dates" className="p-3 rounded bg-neutral-800/60 w-full h-24" />
+        <div className="flex gap-3">
+          <button type="submit" className="px-4 py-3 rounded bg-emerald-500 font-medium">Send Request</button>
+          <a href="#" className="px-4 py-3 rounded border">Call us</a>
+        </div>
+      </form>
+    </section>
+  )
+}
+
+function Footer(){
+  return (
+    <footer className="mt-12 py-8 bg-white border-t">
+      <div className="max-w-6xl mx-auto px-6 text-sm text-gray-600 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>© {new Date().getFullYear()} FESTI CO-LIVE PG — All rights reserved</div>
+        <div className="flex gap-4">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+function Card({image, title, price, features}){
+  return (
+    <div className="bg-white rounded-xl shadow overflow-hidden">
+      <img src={image} alt={title} className="w-full h-44 object-cover" />
+      <div className="p-4">
+        <div className="flex justify-between items-start">
+          <h4 className="font-semibold">{title}</h4>
+          <div className="text-emerald-600 font-bold">{price}</div>
+        </div>
+        <ul className="mt-3 text-sm text-gray-600 space-y-1">
+          {features.map((f,i)=>(<li key={i}>• {f}</li>))}
+        </ul>
+        <div className="mt-4 flex gap-3">
+          <button className="px-3 py-2 bg-emerald-500 text-white rounded">Book</button>
+          <button className="px-3 py-2 border rounded">Details</button>
+        </div>
+      </div>
+    </div>
+  )
+}

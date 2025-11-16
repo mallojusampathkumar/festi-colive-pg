@@ -1,0 +1,46 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from .schemas import ContactCreate, BookingCreate, RoomCreate
+from . import crud
+from .config import MONGO_URL
+
+app = FastAPI(title="FestiCoLive API")
+
+# Allow frontend connections (for demo: allow all)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # in production, set to your Netlify domain only
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+def root():
+    return {"status": "backend running"}
+
+@app.post("/api/contact", status_code=201)
+async def post_contact(payload: ContactCreate):
+    contact = payload.dict()
+    inserted_id = await crud.create_contact(contact)
+    return {"id": inserted_id, "message": "contact saved"}
+
+@app.post("/api/book", status_code=201)
+async def post_booking(payload: BookingCreate):
+    booking = payload.dict()
+    inserted_id = await crud.create_booking(booking)
+    return {"id": inserted_id, "message": "booking saved"}
+
+@app.post("/api/rooms", status_code=201)
+async def post_room(payload: RoomCreate):
+    room = payload.dict()
+    inserted_id = await crud.add_room(room)
+    return {"id": inserted_id, "message": "room added"}
+
+@app.get("/api/rooms")
+def get_rooms():
+    return {"rooms": crud.list_rooms()}
+
+@app.get("/api/bookings")
+def get_bookings():
+    return {"bookings": crud.list_bookings()}

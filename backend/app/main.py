@@ -1,19 +1,34 @@
-from fastapi import FastAPI, HTTPException
+# backend/app/main.py
+import logging
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from .schemas import ContactCreate, BookingCreate, RoomCreate
 from . import crud
-from .config import MONGO_URL
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("festicolive")
 
 app = FastAPI(title="FestiCoLive API")
 
-# Allow frontend connections (for demo: allow all)
+# TEMPORARY: allow Netlify origin and localhost for dev
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # in production, set to your Netlify domain only
+    allow_origins=["https://festicolive.netlify.app", "http://localhost:3000", "http://localhost:8000"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    logger.info(f"Incoming: {request.method} {request.url}")
+    try:
+        response = await call_next(request)
+        logger.info(f"Responded: {response.status_code} for {request.method} {request.url}")
+        return response
+    except Exception as exc:
+        logger.exception("Unhandled exception while processing request")
+        raise
 
 @app.get("/")
 def root():
